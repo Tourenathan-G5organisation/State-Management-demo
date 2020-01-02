@@ -1,3 +1,4 @@
+import 'package:demo/pages/signup_page.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -9,7 +10,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        //primarySwatch: Colors.blue,
         primaryColor: Color(0xff2B2B28),
         accentColor: Color(0xffE3BD06),
       ),
@@ -90,7 +91,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 SizedBox(height: 20.0),
                 SizedBox(width: 200, height: 40,
                 child:  RaisedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
+                    },
                     child: Text(
                       'BLoC Pattern',
                       style: TextStyle(fontSize: 18.0, ),
