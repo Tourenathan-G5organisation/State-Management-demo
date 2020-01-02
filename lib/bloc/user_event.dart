@@ -14,3 +14,10 @@ class NewUser extends UserEvent {
     return [user];
   }
 }
+class showForm extends UserEvent {
+
+  @override
+  List<Object> get props {
+    return [];
+  }
+}

@@ -1,4 +1,4 @@
-import 'package:demo/pages/signup_page.dart';
+import 'package:demo/pages/bloc_signup_page.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -38,18 +38,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,17 +65,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       color: Theme.of(context).accentColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(20.0),
-                      )),)
+                      )),),
 
-              /*  RaisedButton(
-                    onPressed: () {},
-                    child: Text(
-                      'Provider',
-                      style: TextStyle(fontSize: 18.0),
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(20.0),
-                    ))*/,
                 SizedBox(height: 20.0),
                 SizedBox(width: 200, height: 40,
                 child:  RaisedButton(
