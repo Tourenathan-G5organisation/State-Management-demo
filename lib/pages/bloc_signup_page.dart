@@ -207,7 +207,7 @@ class SignUpState extends State<SignUp> {
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(
-                        builder: (context) =>
+                        builder: (_) =>
                             BlocProvider.value(
                               value: BlocProvider.of<UserBloc>(context),
                               child: DetailPage(),)));
