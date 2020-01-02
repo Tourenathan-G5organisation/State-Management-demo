@@ -1,3 +1,4 @@
+import 'package:demo/pages/detail_page.dart';
 import 'package:flutter/material.dart';
 
 class SignUp extends StatefulWidget {
@@ -18,7 +19,7 @@ class SignUpState extends State<SignUp> {
         //backgroundColor: color1,
         title: Text('Sign Up'),
       ),
-      body: Container(
+      body: SafeArea(child: Container(
         //color: color1,
         child: SingleChildScrollView(
           child: Padding(
@@ -26,7 +27,7 @@ class SignUpState extends State<SignUp> {
             child: buildForm(context),
           ),
         ),
-      ),
+      ),)
     );
   }
 
@@ -123,7 +124,9 @@ class SignUpState extends State<SignUp> {
               height: 50,
               child: RaisedButton(
                   onPressed: () {
-                    if (_formKey.currentState.validate()) {}
+                    if (_formKey.currentState.validate()) {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage()));
+                    }
                   },
                   child: Text(
                     'Sign Up',
