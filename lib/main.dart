@@ -1,4 +1,5 @@
 import 'package:demo/pages/bloc_signup_page.dart';
+import 'package:demo/pages/provider_signup_page.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -57,7 +58,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 SizedBox(height: 20.0),
                 SizedBox(width: 200, height: 40,
                   child:  RaisedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => SignUp()));
+                      },
                       child: Text(
                         'Provider',
                         style: TextStyle(fontSize: 18.0, ),
@@ -71,7 +75,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 SizedBox(width: 200, height: 40,
                 child:  RaisedButton(
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => BlocSignUp()));
                     },
                     child: Text(
                       'BLoC Pattern',
