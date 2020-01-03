@@ -1,4 +1,5 @@
 import 'package:demo/data/model/user.dart';
+import 'package:demo/pages/provider_detail_page.dart';
 import 'package:demo/state/user_signup_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -201,12 +202,12 @@ class SignUpState extends State<SignUp> {
         ),
         RaisedButton(
             onPressed: () {
-              /*Navigator.push(context,
+              Navigator.push(context,
                       MaterialPageRoute(
                           builder: (_) =>
-                              BlocProvider.value(
-                                value: BlocProvider.of<UserBloc>(context),
-                                child: DetailPage(),)));*/
+                              ChangeNotifierProvider.value(
+                                value: Provider.of<UserSignUp>(context),
+                                child: DetailPage(),)));
             },
             child: Text(
               'View Details ',
