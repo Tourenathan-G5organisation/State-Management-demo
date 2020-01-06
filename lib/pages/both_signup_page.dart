@@ -1,16 +1,24 @@
+import 'package:demo/bloc/user_bloc.dart';
+import 'package:demo/bloc/user_event.dart';
+import 'package:demo/bloc/user_state.dart';
+import 'package:demo/data/app_repo.dart';
 import 'package:demo/data/model/user.dart';
-import 'package:demo/pages/provider_detail_page.dart';
+import 'package:demo/pages/both_detail_page.dart';
 import 'package:demo/state/user_signup_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
-class SignUp extends StatefulWidget {
+class BothSignUp extends StatefulWidget {
+  //Color color1 = Color(0xff2B2B28);
+  //Color color2 = Color(0xffE3BD06);
   @override
-  SignUpState createState() => SignUpState();
+  BothSignUpState createState() => BothSignUpState();
 }
 
-class SignUpState extends State<SignUp> {
+class BothSignUpState extends State<BothSignUp> {
   final _formKey = GlobalKey<FormState>();
+  User _user = User();
 
   @override
   Widget build(BuildContext context) {
@@ -20,36 +28,36 @@ class SignUpState extends State<SignUp> {
           //backgroundColor: color1,
           title: Text('Sign Up'),
         ),
-        body: ChangeNotifierProvider(
-            create: (_) => UserSignUp(null),
-            child: SafeArea(
+        body: BlocProvider(
+          create: (BuildContext context) => UserBloc(Repository()),
+          child: SafeArea(
               child: Container(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
-                    child:
-                        Consumer<UserSignUp>(builder: (context, userSignUp, _) {
-                      if (userSignUp.isLoading()) {
-                        return buildLoading(context);
-                      }
-                      if (userSignUp.isDataLoaded()) {
-                        return buildWelCome(context, userSignUp);
-                      } else
-                        return buildForm(context, userSignUp);
-                    }), //buildForm(context),
-                  ),
-                ),
+            //color: color1,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
+                child: BlocBuilder<UserBloc, UserState>(
+                  builder: (context, state) {
+                    if (state is UserInitial) {
+                      return buildForm(context);
+                    } else if (state is SignupLoading) {
+                      return buildLoading(context);
+                    } else if (state is UserSignupComplete) {
+                      return buildWelCome(context, state.user);
+                    }
+                  },
+                ), //buildForm(context),
               ),
-            )));
+            ),
+          )),
+        ));
   }
 
   Widget buildLoading(BuildContext context) {
     return Center(child: CircularProgressIndicator());
   }
 
-  Widget buildForm(BuildContext context, UserSignUp userSignUp) {
-    User _user = User();
+  Widget buildForm(BuildContext context) {
     return Form(
       key: _formKey,
       child: Column(
@@ -74,7 +82,7 @@ class SignUpState extends State<SignUp> {
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(25.0)),
             ),
-            onSaved: (value) => _user.userName = value,
+            onSaved: (value) => this._user.userName = value,
           ),
           SizedBox(
             height: 20.0,
@@ -92,7 +100,7 @@ class SignUpState extends State<SignUp> {
                   OutlineInputBorder(borderRadius: BorderRadius.circular(25.0)),
             ),
             validator: _validateField,
-            onSaved: (value) => _user.email = value,
+            onSaved: (value) => this._user.email = value,
           ),
           SizedBox(
             height: 20.0,
@@ -110,7 +118,7 @@ class SignUpState extends State<SignUp> {
                   OutlineInputBorder(borderRadius: BorderRadius.circular(25.0)),
             ),
             validator: _validateField,
-            onSaved: (value) => _user.phoneNumber = value,
+            onSaved: (value) => this._user.phoneNumber = value,
           ),
           SizedBox(
             height: 20.0,
@@ -129,7 +137,7 @@ class SignUpState extends State<SignUp> {
                   OutlineInputBorder(borderRadius: BorderRadius.circular(25.0)),
             ),
             validator: _validateField,
-            onSaved: (value) => _user.password = value,
+            onSaved: (value) => this._user.password = value,
           ),
           SizedBox(
             height: 20.0,
@@ -141,11 +149,7 @@ class SignUpState extends State<SignUp> {
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       _formKey.currentState.save();
-                      userSignUp.signupNewUser(_user);
-                      /* Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DetailPage()));*/
+                      submitUserDetails(context, this._user);
                     }
                   },
                   child: Text(
@@ -180,9 +184,10 @@ class SignUpState extends State<SignUp> {
     );
   }
 
-  Widget buildWelCome(BuildContext context, UserSignUp userSignUp) {
-    return Container(
-        child: Column(
+  Widget buildWelCome(BuildContext context, final User user) {
+    return //Container(
+        //child:
+        Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -195,19 +200,25 @@ class SignUpState extends State<SignUp> {
               style: TextStyle(fontSize: 18.0),
             ),
             Text(
-              '${userSignUp.user.userName}',
+              '${user.userName}',
               style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
             ),
           ],
         ),
         RaisedButton(
             onPressed: () {
-              Navigator.push(context,
-                      MaterialPageRoute(
-                          builder: (_) =>
-                              ChangeNotifierProvider.value(
-                                value: Provider.of<UserSignUp>(context),
-                                child: DetailPage(),)));
+              //repo.user = user;
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) =>
+                          /*BlocProvider.value(
+                              value: BlocProvider.of<UserBloc>(context),
+                              child: DetailPage(),)*/
+                          ChangeNotifierProvider(
+                            create: (_) => UserSignUp(user),
+                            child: DetailPage(),
+                          )));
             },
             child: Text(
               'View Details ',
@@ -222,7 +233,7 @@ class SignUpState extends State<SignUp> {
         SizedBox(height: 60.0),
         RaisedButton(
           onPressed: () {
-            userSignUp.resetData();
+            backToForm(context);
           },
           child: Text(
             'Back to form',
@@ -234,7 +245,7 @@ class SignUpState extends State<SignUp> {
         )
       ],
       //)
-    ));
+    );
   }
 
   String _validateField(String text) {
@@ -245,5 +256,13 @@ class SignUpState extends State<SignUp> {
     return null;
   }
 
-  void submitUserDetails() {}
+  void submitUserDetails(BuildContext context, User newUser) {
+    final weatherBloc = BlocProvider.of<UserBloc>(context);
+    weatherBloc.add(NewUser(newUser));
+  }
+
+  void backToForm(BuildContext context) {
+    final weatherBloc = BlocProvider.of<UserBloc>(context);
+    weatherBloc.add(showForm());
+  }
 }

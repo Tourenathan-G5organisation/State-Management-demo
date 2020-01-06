@@ -10,8 +10,10 @@ class UserSignUp with ChangeNotifier {
   bool _isLoading = false;
   bool _isDataLoaded = false;
 
-  UserSignUp() {
+  UserSignUp(User user) {
     _repository = Repository();
+    if (user != null) _isDataLoaded = true;
+    _user = user;
   }
 
   set user(User user) {

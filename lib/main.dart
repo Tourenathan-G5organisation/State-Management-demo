@@ -1,4 +1,5 @@
 import 'package:demo/pages/bloc_signup_page.dart';
+import 'package:demo/pages/both_signup_page.dart';
 import 'package:demo/pages/provider_signup_page.dart';
 import 'package:flutter/material.dart';
 
@@ -85,7 +86,25 @@ class _MyHomePageState extends State<MyHomePage> {
                     color: Theme.of(context).accentColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(20.0),
-                    )),)
+                    )),),
+
+                SizedBox(height: 20.0),
+                SizedBox(width: 200, height: 40,
+                  child: RaisedButton(
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(
+                            builder: (context) => BothSignUp()));
+                      },
+                      child: Text(
+                        'Both Pattern',
+                        style: TextStyle(fontSize: 18.0,),
+                      ),
+                      color: Theme
+                          .of(context)
+                          .accentColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(20.0),
+                      )),)
 
               ],
             ),
